@@ -21,7 +21,7 @@ class ArticlesController < ApplicationController
             flash[:notice] = "Article was created succefully"
             redirect_to article_path(@article)
         else
-            render :new, status: :unprocessable_entity  
+            render :new, status: 402
         end
 
     end
@@ -30,9 +30,15 @@ class ArticlesController < ApplicationController
         @article = Article.find(params[:id])
         if @article.update(params.require(:article).permit(:title, :description))
             flash[:notice] = "Article was updated succesfully"
-            redirect_to @article
+            redirect_to(@article)
         else
-            render :edit, status: :unprocessable_entity
+            render :edit, status: 402   
         end
+    end
+
+    def destroy
+        @article = Article.find(params[:id])
+        @article.destroy
+        redirect_to articles_path, status: 303
     end
 end
